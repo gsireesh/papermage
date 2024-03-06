@@ -94,7 +94,11 @@ class Entity:
     def __getattr__(self, name: str) -> List["Entity"]:
         """This Overloading is convenient syntax since the `entity.layer` operation is intuitive for folks."""
         try:
-            return self.intersect_by_span(name=name)
+            result = self.intersect_by_span(name=name)
+            # if the kind of entity we're intersecting doesn't have spans, but does have boxes
+            if not result:
+                result  = self.intersect_by_box(name=name)
+            return result
         except ValueError:
             # maybe users just want some attribute of the Entity object
             return self.__getattribute__(name)
@@ -153,7 +157,7 @@ class Entity:
         if self.layer.doc.symbols is None:
             raise ValueError("This Entity's Document is missing symbols")
 
-        matched_tokens = self.intersect_by_box(name=TokensFieldName)
+        matched_tokens = self.intersect_by_box(name="tokens")
         return [self.layer.doc.symbols[span.start : span.end] for t in matched_tokens for span in t.spans]
 
     @property
