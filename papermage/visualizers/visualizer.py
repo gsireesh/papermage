@@ -28,11 +28,14 @@ def plot_entities_on_page(
     id_text_color: Optional[str] = None,
     id_text_background_color: Optional[str] = None,
     id_text_background_alpha: Optional[float] = 1,
+    page_number: Optional[int] = None
 ) -> Image:
     page_w, page_h = page_image.pilimage.size
     lpe_boxes = []
     for entity in entities:
         for box in entity.boxes:
+            if page_number is not None and box.page != page_number:
+                continue
             lpe_box = lpe.Rectangle(
                 x_1=box.l * page_w, y_1=box.t * page_h, x_2=(box.l + box.w) * page_w, y_2=(box.t + box.h) * page_h
             )
