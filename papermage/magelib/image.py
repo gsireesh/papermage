@@ -57,11 +57,11 @@ class Image:
         return my_image
 
     def to_json(self):
-        pass
+        return self.to_base64()
 
     @classmethod
     def from_json(cls, image_json):
-        pass
+        return cls.from_base64(image_json)
 
     def to_base64(self) -> str:
         # Ref: https://stackoverflow.com/a/31826470

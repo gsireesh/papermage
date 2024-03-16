@@ -47,6 +47,7 @@ class Entity:
         entity_dict = dict(
             spans=[span.to_json() for span in self.spans],
             boxes=[box.to_json() for box in self.boxes],
+            images=[image.to_json() for image in self.images],
             metadata=self.metadata.to_json(),
         )
         # only serialize non-null/non-empty values
@@ -57,6 +58,8 @@ class Entity:
         return cls(
             spans=[Span.from_json(span_json=span_json) for span_json in entity_json.get("spans", [])],
             boxes=[Box.from_json(box_json=box_json) for box_json in entity_json.get("boxes", [])],
+            images=[Image.from_json(image_json=image_json) for image_json in entity_json.get(
+                "images", [])],
             metadata=Metadata.from_json(entity_json.get("metadata", {})),
         )
 
