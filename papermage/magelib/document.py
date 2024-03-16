@@ -99,11 +99,11 @@ class Document:
         for prediction in all_preds:
             self.annotate_layer(name=prediction.name, entities=prediction.entities)
 
-    def annotate_layer(self, name: str, entities: Union[List[Entity], Layer]) -> None:
+    def annotate_layer(self, name: str, entities: Union[List[Entity], Layer], require_disjoint: bool=True) -> None:
         self.validate_layer_name_availability(name=name)
 
         if isinstance(entities, list):
-            layer = Layer(entities=entities)
+            layer = Layer(entities=entities, require_disjoint=require_disjoint)
         else:
             layer = entities
 

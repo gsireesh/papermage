@@ -24,13 +24,13 @@ class Layer:
 
     __slots__ = ["entities", "metadata", "span_indexer", "box_indexer", "_name", "_doc"]
 
-    def __init__(self, entities: List[Entity], metadata: Optional[Metadata] = None):
+    def __init__(self, entities: List[Entity], metadata: Optional[Metadata] = None, require_disjoint: bool = True):
         self.entities = entities
         for i, entity in enumerate(entities):
             entity.layer = self
             entity.id = i
         self.metadata = metadata if metadata else Metadata()
-        self.span_indexer = EntitySpanIndexer(entities=entities)
+        self.span_indexer = EntitySpanIndexer(entities=entities, require_disjoint=require_disjoint)
         self.box_indexer = EntityBoxIndexer(entities=entities)
         self._name = None
         self._doc = None

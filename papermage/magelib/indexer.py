@@ -41,7 +41,7 @@ class EntitySpanIndexer(Indexer):
     Volume 23, Issue 11, 1 June 2007, Pages 1386–1393, https://doi.org/10.1093/bioinformatics/btl647
     """
 
-    def __init__(self, entities: List[Entity]) -> None:
+    def __init__(self, entities: List[Entity], require_disjoint=True) -> None:
         starts = []
         ends = []
         ids = []
@@ -57,7 +57,8 @@ class EntitySpanIndexer(Indexer):
             np.array(starts, dtype=np.int32), np.array(ends, dtype=np.int32), np.array(ids, dtype=np.int32)
         )
 
-        self._ensure_disjoint()
+        if require_disjoint:
+            self._ensure_disjoint()
 
     def _ensure_disjoint(self) -> None:
         """
