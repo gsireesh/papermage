@@ -189,7 +189,8 @@ class Document:
         # 2) instantiate entities
         for field_name, entity_jsons in doc_json[EntitiesFieldName].items():
             entities = [Entity.from_json(entity_json=entity_json) for entity_json in entity_jsons]
-            doc.annotate_layer(name=field_name, entities=entities)
+            require_disjoint = field_name != "annotation_highlights"
+            doc.annotate_layer(name=field_name, entities=entities, require_disjoint=require_disjoint)
 
         return doc
 
