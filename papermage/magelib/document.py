@@ -93,11 +93,12 @@ class Document:
         """Gets a layer by name. For example, `doc.get_layer("sentences")` returns sentences."""
         return getattr(self, name)
 
-    def annotate(self, *predictions: Union[Prediction, Tuple[Prediction, ...]]) -> None:
+    def annotate(self, *predictions: Union[Prediction, Tuple[Prediction, ...]], require_disjoint=True) -> None:
         """Annotates the document with predictions."""
         all_preds = chain.from_iterable([p] if isinstance(p, Prediction) else p for p in predictions)
         for prediction in all_preds:
-            self.annotate_layer(name=prediction.name, entities=prediction.entities)
+            self.annotate_layer(name=prediction.name, entities=prediction.entities,
+                                require_disjoint=require_disjoint)
 
     def annotate_layer(self, name: str, entities: Union[List[Entity], Layer], require_disjoint: bool=True) -> None:
         self.validate_layer_name_availability(name=name)
